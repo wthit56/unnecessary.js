@@ -55,7 +55,9 @@
 	})();
 
 	// And here's the actual sort function.
-	return function sort(array, compareFunction) {
+	return function sort(compareFunction) {
+		var array = this;
+
 		// If there are less than 2 items in the array, no sorting is required.
 		if (array.length < 2) { return array; }
 
