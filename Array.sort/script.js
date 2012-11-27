@@ -42,11 +42,11 @@
 			//		Instead you will have to pass in your own compareFunction.
 			//	This will be a function that takes 2 arguments, and returns a number.
 			//		So if we want to compare two numbers, we can do something like this:
-			/*
-			[10, 5].sort(function(a, b){
-			return a - b;
-			}); // returns [5, 10];
-			*/
+			
+			//  [10, 5].sort(function(a, b){
+			//      return a - b;
+			//  }); // returns [5, 10];
+			//
 			//	If a 0 is returned, the items are equal in greatness,
 			//		and should be next to each other in the resulting sorted array.
 			//		If a positive number is returned, b should be before a.

@@ -1,4 +1,4 @@
-## event-loop
+# Event-Loop
 The event loop is a tricky thing to get your head around. 
 John Resig (of [jQuery](http://jquery.com/) fame) wrote a 
 [great blog](http://ejohn.org/blog/how-javascript-timers-work/) 
@@ -25,7 +25,7 @@ event or timer is added to the stack. For now, I'm <cite>console.log</cite>ging 
 loop is closed and opened, to show you what's going on.
 
 
-### script.js
+## script.js
 So this file exposes the EL object. This includes:
 
 **.events**: the array of events. You can inspect this or print it out how you like so you can 
@@ -44,15 +44,15 @@ works exactly the same way the regular JavaScript methods work.
 > for immediate events go at the beginning, followed by any timer events.
 
 
-### index.html
+## index.html
 This page runs some examples against the EL object, <cite>console.log</cite>ging out messages 
 along the way to show you how things are working.
 
-    var interval = { value: 0 };
-    var iID = EL.setInterval(function (interval) {
-	    console.log("interval", interval.value);
-	    interval.value++;
-    }, 100, interval);
+	var interval = { value: 0 };
+	var iID = EL.setInterval(function (interval) {
+		console.log("interval", interval.value);
+		interval.value++;
+	}, 100, interval);
 
 This code sets a new interval that will <cite>console.log</cite> the passed-in interval's value 
 before increasing it. It repeats every 100<abbr title="miliseconds">ms</abbr>. The returned 
@@ -81,6 +81,6 @@ into the future. It then packages all this up into a function and adds it as an 
 loop. This means the loop will be opened, or kept open until those timeouts are called.
 
 
-### comparison.html
+## comparison.html
 This file is a line-for-line copy of index.html, but uses the native JavaScript methods instead. 
 Using this file, you make sure the implementations behave the same.
