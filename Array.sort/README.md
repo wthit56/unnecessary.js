@@ -39,4 +39,5 @@ Then we just return the array, and we're done.
 
 ## sort test.html
 This file reveals the way items are compared in the original JavaScript methods.
+
 	// TODO: explain what this file is doing
