@@ -79,5 +79,10 @@ executed, this timer will clear the previously set interval. This means the inte
 
 These final lines setup an onclick input event. It will <cite>console.log</cite> the fact that 
 it's been triggered, and then create two timeouts 1000 and 1010<abbr title="miliseconds">ms</abbr> 
-into the future. It then packages all this up into a function and adds it as an event into the loop. 
-This means the loop will be opened, or kept open until those timeouts are called.
+into the future. It then packages all this up into a function and adds it as an event into the 
+loop. This means the loop will be opened, or kept open until those timeouts are called.
+
+
+### comparison.html
+This file is a line-for-line copy of index.html, but uses the native JavaScript methods instead. 
+Using this file, you make sure the implementations behave the same.
