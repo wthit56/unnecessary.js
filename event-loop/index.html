@@ -21,13 +21,9 @@
 			}, 1000, Math.random());
 
 
-			function onclick_handler(e) {
-				console.log("window.onclick", e.pageX, e.pageY);
-			}
-
 			window.onclick = function (e) {
 				EL.add(function () {
-					onclick_handler(e);
+					console.log("window.onclick", e.pageX, e.pageY);
 					EL.setTimeout(function () { console.log("window.onclick +1000ms", new Date().getTime()); }, 1000);
 					EL.setTimeout(function () { console.log("window.onclick +1010ms", new Date().getTime()); }, 1010);
 				});
