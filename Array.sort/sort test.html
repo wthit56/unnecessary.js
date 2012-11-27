@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8" />
+	</head>
+	<body>
+		<script type="text/javascript">
+			function Notifier(value) {
+				this.toString = function () {
+					console.log(value + " accessed");
+					return value;
+				};
+			}
+
+			var a = [new Notifier(1), new Notifier(3), new Notifier(2)];
+			a.sort();
+		</script>
+	</body>
+</html>

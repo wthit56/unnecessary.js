@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8" />
+		<style type="text/css">
+			html, body {min-height:100%;}
+			body {background-color:#FFFFFF;}
+			
+			p {
+				margin:0;
+				font-size:20px; font-family:sans-serif;
+				color:#CCCCCC; text-align:center;
+			}
+			p.big {font-size:40px;}
+		</style>
+	</head>
+	<body>
+		<p class="big">Please open your browser's Console to see output</p>
+		<p>press F12, or right-click &gt; inspect element to open the dev tools</p>
+		<p>then select the "Console" tab</p>
+
+		<script src="script.js" type="text/javascript"></script>
+		<script type="text/javascript">
+
+			var arraysAreIdentical = (function () {
+				function compareEqual(a, b) {
+					return a === b;
+				}
+
+				return function arraysAreIdentical(a, b, compare) {
+					compare = compare || compareEqual;
+					return (a.filter(function (v, i, a) { return compare(v, b[i]); }).length > 0);
+				};
+			})();
+
+			var arrayClone = (function () {
+				var clone;
+				function copy(v, i, a) { clone[i] = v; }
+
+				return function arrayClone(array) {
+					clone = new Array(array.length);
+					array.forEach(copy);
+					return clone;
+				};
+			})();
+
+			function sortNumerical(a, b) { return a - b; }
+
+			function test(array, sortingMethod) {
+				var original = JSON.stringify(arrayClone(array).sort(sortingMethod));
+				var rewrite = JSON.stringify(sort.call(arrayClone(array), sortingMethod));
+
+				console.log((original === rewrite) ? "PASS" : "FAIL", JSON.stringify(array), ">", original, rewrite);
+			};
+
+			test([3, 2, 1]);
+			test([5, 10]);
+			test([20, 3], sortNumerical);
+			test([{ v: 3 }, { v: 2 }, { v: 1}], function (a, b) { return a.v - b.v; });
+			test([2, 5, 4, 3, 1], function (a, b) { return a - b; });
+
+		</script>
+	</body>
+</html>
