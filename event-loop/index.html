@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Event Loop</title>
+		<meta charset="utf-8" />
+	</head>
+	<body>
+		<script src="script.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			
+			var interval = { value: 0 };
+			var iID = EL.setInterval(function (interval) {
+				console.log("interval", interval.value);
+				interval.value++;
+			}, 100, interval);
+
+			EL.setTimeout(function (r) {
+				console.log("timeout", r);
+				EL.clearInterval(iID);
+			}, 1000, Math.random());
+
+
+			function onclick_handler(e) {
+				console.log("window.onclick", e.pageX, e.pageY);
+			}
+
+			window.onclick = function (e) {
+				EL.add(function () {
+					onclick_handler(e);
+					EL.setTimeout(function () { console.log("window.onclick +1000ms", new Date().getTime()); }, 1000);
+					EL.setTimeout(function () { console.log("window.onclick +1010ms", new Date().getTime()); }, 1010);
+				});
+			};
+
+		</script>
+	</body>
+</html>

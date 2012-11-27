@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8" />
+	</head>
+	<body>
+		<script type="text/javascript">
+
+			var interval = { value: 0 };
+			var iID = setInterval(function (interval) {
+				console.log("interval", interval.value);
+				interval.value++;
+			}, 100, interval);
+
+			setTimeout(function (r) {
+				console.log("timeout", r);
+				clearInterval(iID);
+			}, 1000, Math.random());
+
+
+			function onclick_handler(e) {
+				console.log("window.onclick", e.pageX, e.pageY);
+			}
+
+			window.onclick = function (e) {
+				onclick_handler(e);
+				setTimeout(function () { console.log("window.onclick +1000ms", new Date().getTime()); }, 1000);
+				setTimeout(function () { console.log("window.onclick +1010ms", new Date().getTime()); }, 1010);
+			};
+
+		</script>
+	</body>
+</html>
