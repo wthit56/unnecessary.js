@@ -1,5 +1,4 @@
-﻿
-var sort = (function () {
+﻿var sort = (function () {
 	// This is the default comparison method.
 	var compareStringFunction = (function () {
 		var aS, bS;
@@ -9,7 +8,7 @@ var sort = (function () {
 			aS = a.toString(); bS = b.toString();
 
 			return (
-				(aS == bS) ?	// If the strings are the same,
+				(aS == bS) ? // If the strings are the same,
 					0 : 		//	return 0 (the items are next to each other, so do nothing).
 					(aS > bS) ? // If a's string is greater than b's,
 						1 : 	//	return 1 (a should be after b);
@@ -44,9 +43,9 @@ var sort = (function () {
 			//	This will be a function that takes 2 arguments, and returns a number.
 			//		So if we want to compare two numbers, we can do something like this:
 			/*
-				[10, 5].sort(function(a, b){
-					return a - b;
-				}); // returns [5, 10];
+			[10, 5].sort(function(a, b){
+			return a - b;
+			}); // returns [5, 10];
 			*/
 			//	If a 0 is returned, the items are equal in greatness,
 			//		and should be next to each other in the resulting sorted array.
@@ -60,22 +59,12 @@ var sort = (function () {
 		// If there are less than 2 items in the array, no sorting is required.
 		if (array.length < 2) { return array; }
 
-		var i = 0;					// Index, to track the current item in loops.
-		var l = array.length - 1;	// Length, to track the last item to compare.
-									//	We will be comparing to the next item;
-									//		the last item will have no item after it compare to.
-		var r = false;				// Reverse, to keep track of whether we need to
-									//	loop through the items in reverse,
-									//	to ensure correct ordering.
-
 		// If a compareFunction has not been provided,
 		//	the default string comparison (above) is used instead.
 		compareFunction = compareFunction || compareStringFunction;
 
 		// This will loop infinitely until something inside the loop stops it.
-		while (i < l) {
-			// If there are no more items to compare to, stop the loop.
-
+		for (var i = 0, l = array.length - 1; i < l; i++) {
 			//	-1 means current item should be before the next item;
 			//		this is already the case, so we can simply continue.
 			//	0 means current item is equal to the next item;
@@ -90,24 +79,29 @@ var sort = (function () {
 			//				through the array and do these checks.
 
 			// Call the compareFunction, passing in the current item and the next item in the array.
+			// If the current item should be after the next item:
 			if (compareFunction(array[i], array[i + 1]) > 0) {
+				// Swap the current and next items' positions in the array.
 				array.splice(i, 2, array[i + 1], array[i]);
-				r = true;
-			}
 
-			i++;
-		}
-
-		if (r) {
-			i = array.length - 1;
-			while (i > 0) {
-				if (compareFunction(array[i], array[i - 1]) < 0) {
-					array.splice(i - 1, 2, array[i], array[i - 1]);
+				// Loop back through the array from the current position
+				for (var j = i; j > 0; j--) {
+					// Call the compareFunction, passing in the current item and the previous item.
+					// If the current item should be before the next item:
+					if (compareFunction(array[j], array[j - 1]) < 0) {
+						// Swap the current and next items' positions in the array.
+						array.splice(j - 1, 2, array[j], array[j - 1]);
+					}
+					// Otherwise:
+					else {
+						// Stop looping back through the array
+						break;
+					}
 				}
-				i--;
 			}
 		}
 
+		// return the now sorted array
 		return array;
 	};
 
