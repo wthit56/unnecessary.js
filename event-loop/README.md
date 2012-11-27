@@ -1,5 +1,3 @@
-# Unnecesary.js
-
 ## event-loop
 The event loop is a tricky thing to get your head around. 
 John Resig (of [jQuery](http://jquery.com/) fame) wrote a 
