@@ -48,32 +48,38 @@ works exactly the same way the regular JavaScript methods work.
 This page runs some examples against the EL object, <cite>console.log</cite>ging out messages 
 along the way to show you how things are working.
 
-	var interval = { value: 0 };
-	var iID = EL.setInterval(function (interval) {
-		console.log("interval", interval.value);
-		interval.value++;
-	}, 100, interval);
+```js
+var interval = { value: 0 };
+var iID = EL.setInterval(function (interval) {
+	console.log("interval", interval.value);
+	interval.value++;
+}, 100, interval);
+```
 
 This code sets a new interval that will <cite>console.log</cite> the passed-in interval's value 
 before increasing it. It repeats every 100<abbr title="miliseconds">ms</abbr>. The returned 
 timerID is stored in the iID variable for later use.
 
-	EL.setTimeout(function (r) {
-		console.log("timeout", r);
-		EL.clearInterval(iID);
-	}, 1000, Math.random());
+```js
+EL.setTimeout(function (r) {
+	console.log("timeout", r);
+	EL.clearInterval(iID);
+}, 1000, Math.random());
+```
 
 A new timeout is then created, to be executed in 1000<abbr title="miliseconds">ms</abbr>. When 
 executed, this timer will clear the previously set interval. This means the interval will be run 
 9 times and then stop.
 
-	window.onclick = function (e) {
-		EL.add(function () {
-			console.log("window.onclick", e.pageX, e.pageY);
-			EL.setTimeout(function () { console.log("window.onclick +1000ms", new Date().getTime()); }, 1000);
-			EL.setTimeout(function () { console.log("window.onclick +1010ms", new Date().getTime()); }, 1010);
-		});
-	};
+```js
+window.onclick = function (e) {
+	EL.add(function () {
+		console.log("window.onclick", e.pageX, e.pageY);
+		EL.setTimeout(function () { console.log("window.onclick +1000ms", new Date().getTime()); }, 1000);
+		EL.setTimeout(function () { console.log("window.onclick +1010ms", new Date().getTime()); }, 1010);
+	});
+};
+```
 
 These final lines setup an onclick input event. It will <cite>console.log</cite> the fact that 
 it's been triggered, and then create two timeouts 1000 and 1010<abbr title="miliseconds">ms</abbr> 
