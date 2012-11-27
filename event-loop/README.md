@@ -31,7 +31,7 @@ loop is closed and opened, to show you what's going on.
 So this file exposes the EL object. This includes:
 
 **.events**: the array of events. You can inspect this or print it out how you like so you can 
-    see what's going on.
+see what's going on.
 
 **.add(_fn_)**: add a function as an immediate event to the loop. It won't actually be executed 
 right away, but it'll be added to the top of the stack to be run quickly. _New events should 
@@ -57,4 +57,27 @@ along the way to show you how things are working.
     }, 100, interval);
 
 This code sets a new interval that will <cite>console.log</cite> the passed-in interval's value 
-before increasing it. It repeats every 100 miliseconds
+before increasing it. It repeats every 100<abbr title="miliseconds">ms</abbr>. The returned 
+timerID is stored in the iID variable for later use.
+
+	EL.setTimeout(function (r) {
+		console.log("timeout", r);
+		EL.clearInterval(iID);
+	}, 1000, Math.random());
+
+A new timeout is then created, to be executed in 1000<abbr title="miliseconds">ms</abbr>. When 
+executed, this timer will clear the previously set interval. This means the interval will be run 
+9 times and then stop.
+
+	window.onclick = function (e) {
+		EL.add(function () {
+			console.log("window.onclick", e.pageX, e.pageY);
+			EL.setTimeout(function () { console.log("window.onclick +1000ms", new Date().getTime()); }, 1000);
+			EL.setTimeout(function () { console.log("window.onclick +1010ms", new Date().getTime()); }, 1010);
+		});
+	};
+
+These final lines setup an onclick input event. It will <cite>console.log</cite> the fact that 
+it's been triggered, and then create two timeouts 1000 and 1010<abbr title="miliseconds">ms</abbr> 
+into the future. It then packages all this up into a function and adds it as an event into the loop. 
+This means the loop will be opened, or kept open until those timeouts are called.
