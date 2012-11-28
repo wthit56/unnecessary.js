@@ -46,8 +46,16 @@ works exactly the same way the regular JavaScript methods work.
 
 
 ## index.html
-This page runs some examples against the EL object, `console.log`ging out messages 
-along the way to show you how things are working.
+This page loads in the Unnecesary.js version (verbose.js), and runs test.js against it.
+
+
+## comparison.html
+This page runs test.js against the native JavaScript methods.
+
+
+## test.js
+This file is run in both index.html and comparison.html, and `console.log`s a number of test 
+cases:
 
 ```js
 var interval = { value: 0 };
@@ -85,8 +93,3 @@ These final lines setup an onclick input event. It will `console.log` the fact t
 it's been triggered, and then create two timeouts 1000 and 1010ms into the future. 
 It then packages all this up into a function and adds it as an event into the loop. 
 This means the loop will be opened, or kept open until those timeouts are called.
-
-
-## comparison.html
-This file is a line-for-line copy of index.html, but uses the native JavaScript methods instead. 
-Using this file, you make sure the implementations behave the same.

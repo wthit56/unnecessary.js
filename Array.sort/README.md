@@ -30,14 +30,49 @@ Then we just return the array, and we're done.
 
 
 ## index.html
-	// TODO: rewrite to make simpler
+This page loads in the Unnecesary.js version (verbose.js), and runs test.js against it.
 
 
 ## comparison.html
-	// TODO: rewrite to demonstrate original method behaviour
+This page runs test.js against the native JavaScript methods.
 
 
-## sort test.html
+## test.js
+This file is run in both index.html and comparison.html, and `console.log`s a number of test 
+cases:
+
+```js
+[3, 2, 1].sort();
+```
+This code will sort the array correctly using the default alphabetical compareFunction.
+
+```js
+[5, 10].sort();
+```
+This code demonstrates the buggy output when using the default compareFunction.
+
+```js
+[20, 3].sort(function (a, b) { return a - b; });
+```
+This code will correctly sort the array by passing in a compareFunction which compares "a" and 
+"b" as numbers.
+
+```js
+[{ v: 3 }, { v: 2 }, { v: 1 }].sort(function (a, b) { return a.v - b.v; }).map(function (v) { return v.v; })
+```
+This code creates a number objects, and uses a compareFunction to compare properties within 
+these objects. The result is then mapped to just output the values sorted on.
+
+```js
+[2, 5, 4, 3, 1].sort(function (a, b) { return a - b; });
+```
+This code demonstrates the need for recursing back through the array to correctly place a moved 
+item.
+
+
+## reverse-engineering.html
 This file reveals the way items are compared in the original JavaScript methods.
 
-	// TODO: explain what this file is doing
+It creates objects with a `.toString` method attached, which will `console.log` it's value, 
+as well as a randomly-generated identifier. It shows how the sorting and comparison is done 
+for each item.

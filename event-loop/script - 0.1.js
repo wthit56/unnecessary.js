@@ -1,8 +1,6 @@
 ﻿var EL = (function () {
 	var global = this;
 
-	var _setTimeout = setTimeout;
-
 	var events = [];
 
 	var nextID = null;
@@ -19,7 +17,7 @@
 		}
 
 		if (events.length > 0) {
-			nextID = _setTimeout(next, 0);
+			nextID = setTimeout(next, 0);
 		}
 		else {
 			console.log("* event loop closed");
@@ -32,7 +30,7 @@
 
 		if (events.length == 1) {
 			console.log("* event loop open");
-			nextID = _setTimeout(next, 0);
+			nextID = setTimeout(next, 0);
 		}
 	};
 
@@ -46,15 +44,15 @@
 			var args = Array.prototype.slice.call(arguments, 3);
 
 			if (repeat) {
-				wfn = function timer_fn() {
+				wfn = function interval() {
 					fn.apply(global, args);
-					schedule(timer_fn);
+					schedule(interval);
 				};
 			}
 			else {
-				wfn = function timer_fn() {
+				wfn = function timeout() {
 					fn.apply(global, args);
-					clear(timer_fn.id);
+					clear(timeout.id);
 				};
 			}
 
@@ -65,11 +63,11 @@
 			wfn.id = timerID;
 			timerIDs[timerID] = fn;
 
-			schedule(wfn);
+			schedule(wfn, ms);
 
 			if (!nextID) {
 				console.log("* event loop open");
-				nextID = _setTimeout(next, 0);
+				nextID = setTimeout(next, 0);
 			}
 
 			return timerID;
@@ -99,20 +97,26 @@
 		};
 	})();
 
-	window.setTimeout = function setTimeout(fn, ms, args) {
-		return timer.set.apply(timer, [false].concat(Array.prototype.slice.call(arguments, 0)));
-	};
-
-	window.setInterval = function setInterval(fn, ms, args) {
-		return timer.set.apply(timer, [true].concat(Array.prototype.slice.call(arguments, 0)));
-	};
-
-	window.clearTimeout = window.clearInterval = timer.clear;
-
-
 	return {
 		events: events,
-		add: add
+
+		add: add,
+
+		setTimeout: (function () {
+			var prepend = [false];
+			return function setTimeout(fn, ms, args) {
+				return timer.set.apply(timer, prepend.concat(Array.prototype.slice.call(arguments, 0)));
+			};
+		})(),
+		clearTimeout: function (id) { return timer.clear(id); },
+
+		setInterval: (function () {
+			var prepend = [true];
+			return function setInterval(fn, ms, args) {
+				return timer.set.apply(timer, prepend.concat(Array.prototype.slice.call(arguments, 0)));
+			};
+		})(),
+		clearInterval: function (id) { return timer.clear(id); }
 	};
 })();
 
