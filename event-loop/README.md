@@ -28,17 +28,18 @@ loop is closed and opened, to show you what's going on.
 ## script.js
 So this file exposes the EL object. This includes:
 
-**.events**: the array of events. You can inspect this or print it out how you like so you can 
+`.events`: the array of events. You can inspect this or print it out how you like so you can 
 see what's going on.
 
-**.add( ___fn___ )**: add a function as an immediate event to the loop. It won't actually be executed 
+`.add( _fn_ )`: add a function as an immediate event to the loop. It won't actually be executed 
 right away, but it'll be added to the top of the stack to be run quickly. _New events should 
 really be added after any other "immediate" events, but for now it just `unshift`s 
 the new event into the events array._
 
-**.setTimeout( ___fn___, ___ms___, ___args___ ), .clearTimeout( ___id___ ),
-  .setInterval( ___fn___, ___ms___, ___args___ ), .clearInterval( ___id___ )**: 
-works exactly the same way the regular JavaScript methods work.
+Some global methods are also over-written:
+`setTimeout(fn, ms, args...)`, `clearTimeout(id)`,
+`setInterval(fn, ms, args...)`, `clearInterval(id)`.
+These work exactly the same way the regular JavaScript methods work.
 
 > NOTE: browsers vary on how timers and immediate events take precedence over each other when 
 > deciding which event should be executed next. However, to keep things simple, I've just gone 
