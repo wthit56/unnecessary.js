@@ -34,9 +34,9 @@
 					// ...and execute it
 					event();
 				}
-				// when errors are thrown...
+				// when an error is thrown...
 				catch (error) {
-					// send the message to the console
+					// ...send the message to the console
 					console.error(error.message);
 				}
 
@@ -80,7 +80,7 @@
 			// loop is now running
 			running = true;
 			// ...so start the loop
-			next();
+			_setTimeout(next, 0);
 		}
 	}
 
@@ -156,9 +156,9 @@
 					// apply captured arguments to the 
 					//    original handler function
 					fn.apply(global, args);
-					// clear timer from lookup object;
-					//    it cannot be cleared now
-					timer_clear(fn.id);
+					// as this is a run-once setTimeout timer,
+					//    we can remove it from the timers lookup object
+					delete timers[timer_fn.id];
 				}
 			}
 			// there are no captured arguments...
@@ -201,15 +201,18 @@
 	}
 
 	function timer_clear(id) {
-		// retrieve timer function from lookup object
+		// retrieve timer function from lookup object...
 		var fn = timers[id];
-		// find index of the timer function in the stack
-		var event_index = events.indexOf(fn);
-
-		// remove timer function from lookup object
+		// ...and remove it
 		delete timers[id];
-		// remove timer function from the stack
-		events.splice(event_index, 1);
+
+		// find index of the timer function in the stack...
+		var event_index = events.indexOf(fn);
+		// ...and if found...
+		if (event_index !== -1) {
+			// ...remove it
+			events.splice(event_index, 1);
+		}
 	}
 
 

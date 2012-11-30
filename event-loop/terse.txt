@@ -1,1 +1,7 @@
-﻿
+﻿ $
+     FGH JK M  PQR   VWXYZ
+                   tu w y 
+
+				   
+(?<!function|return|new|var|delete)\s+
+

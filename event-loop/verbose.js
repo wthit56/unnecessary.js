@@ -8,6 +8,7 @@
 
 	var event,
 		running = false;
+
 	function next() {
 		if (events.length > 0) {
 			event = events[0];
@@ -41,29 +42,31 @@
 		if (!running) {
 			console.log("* event loop started *");
 			running = true;
-			next();
+			_setTimeout(next, 0);
 		}
 	}
 
-	var i, l;
-	function add(event) {
-		if (event.time != null) {
-			i = events.first_timer_index, l = events.length;
-			while (
+	var add = (function () {
+		var i, l;
+
+		return function add(event) {
+			if (event.time != null) {
+				i = events.first_timer_index, l = events.length;
+				while (
 				(i < l) &&
 				(events[i].time <= event.time)
 			) { i++; }
 
-			events.splice(i, 0, event);
-		}
-		else {
-			events.splice(events.first_timer_index, 0, event);
-			events.first_timer_index++;
-		}
+				events.splice(i, 0, event);
+			}
+			else {
+				events.splice(events.first_timer_index, 0, event);
+				events.first_timer_index++;
+			}
 
-		start();
-	}
-
+			start();
+		};
+	})();
 
 	var timer = (function () {
 		var timerID = 0,
@@ -84,7 +87,7 @@
 				else {
 					timer_fn = function once_fn() {
 						fn.apply(global, args);
-						clear(once_fn.id);
+						timers[once_fn.id];
 					}
 				}
 

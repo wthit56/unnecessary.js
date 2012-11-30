@@ -1,146 +1,148 @@
 ﻿(function () {
 
-	var global = this,
-		_setTimeout = global.setTimeout;
+	var S = "splice",
+		A = "apply",
+		C = "call",
+		L = "length",
+		T = "time",
+		U = "unshift",
+		F = "etMilliseconds",
 
-	var events = [];
-	events.first_timer_index = 0;
+		I = true, O = false, N = null,
+		D = Date, E = console,
+		B = Array.prototype,
 
-	var event,
-		running = false;
-	function next() {
-		if (events.length > 0) {
-			event = events[0];
+		_ = this,
+		s = _.setTimeout,
+
+		e = [],
+		f = 0,
+
+		v,
+		r,
+
+		i, l,
+		d,
+		z,
+		k,
+		m, p,
+
+		b = 0,
+		c = {};
+
+	function n() {
+		if (e[L] > 0) {
+			v = e[0];
 
 			if (
-				(event.time == null) ||
-				(event.time <= new Date())
+				(v[T] == N) ||
+				(v[T] <= new D)
 			) {
 				try {
-					events.shift()();
+					e.shift()();
 				}
-				catch (error) {
-					console.error(error.message);
+				catch (x) {
+					E.error(x.message);
 				}
 			}
 
-			if (event.time == null) {
-				events.first_timer_index--;
+			if (v[T] == N) {
+				f--;
 			}
 
-			_setTimeout(next, 0);
+			s(n, 0);
 		}
 		else {
-			console.log("* event loop stopped *");
-			running = false;
+			E.log("* event loop stopped *");
+			r = O;
 		}
 	}
 
 
-	function start() {
-		if (!running) {
-			console.log("* event loop started *");
-			running = true;
-			next();
+	function o() {
+		if (!r) {
+			E.log("* event loop started *");
+			r = I;
+			s(n, 0);
 		}
 	}
 
-	var i, l;
-	function add(event) {
-		if (event.time != null) {
-			i = events.first_timer_index, l = events.length;
+	function a(v) {
+		if (v[T] != N) {
+			i = f, l = e[L];
 			while (
 				(i < l) &&
-				(events[i].time <= event.time)
+				(e[i][T] <= v[T])
 			) { i++; }
 
-			events.splice(i, 0, event);
+			e[S](i, 0, v);
 		}
 		else {
-			events.splice(events.first_timer_index, 0, event);
-			events.first_timer_index++;
+			e[S](f, 0, v);
+			f++;
 		}
 
-		start();
+		o();
+	};
+
+	function w(repeat, fn, ms, args) {
+		z = B.slice[C](arguments, 3);
+
+		if (repeat) {
+			d = function g() {
+				fn[A](_, z);
+				j(g);
+			};
+		}
+		else {
+			d = function h() {
+				fn[A](_, z);
+				c[h.i];
+			}
+		}
+
+		d.m = ms;
+
+		d.i = b;
+		c[b] = d;
+		b++;
+
+		j(d);
+
+		return d.i;
+	}
+
+	function j(fn) {
+		k = fn[T] = new D;
+		k["s" + F](k["g" + F]() + fn.m);
+		a(fn);
+	}
+
+	function q(id) {
+		m = c[id];
+		delete c[id];
+
+		p = e.indexOf(m);
+		if (p !== -1) {
+			e[S](p, 1);
+		}
 	}
 
 
-	var timer = (function () {
-		var timerID = 0,
-			timers = {};
-
-		var set = (function () {
-			var args, timer_fn;
-
-			return function set(repeat, fn, ms, args) {
-				args = Array.prototype.slice.call(arguments, 3);
-
-				if (repeat) {
-					timer_fn = function repeating_fn() {
-						fn.apply(global, args);
-						schedule(repeating_fn);
-					};
-				}
-				else {
-					timer_fn = function once_fn() {
-						fn.apply(global, args);
-						clear(once_fn.id);
-					}
-				}
-
-				timer_fn.ms = ms;
-
-				timer_fn.id = timerID;
-				timers[timerID] = timer_fn;
-				timerID++;
-
-				schedule(timer_fn);
-
-				return timer_fn.id;
-			};
-		})();
-
-		function schedule(fn) {
-			var time = fn.time = new Date();
-			time.setMilliseconds(time.getMilliseconds() + fn.ms);
-			add(fn);
-		}
-
-		var clear = (function () {
-			var fn, event_index;
-
-			return function clear(id) {
-				fn = timers[id];
-				delete timers[id];
-
-				event_index = events.indexOf(fn);
-				if (event_index !== -1) {
-					events.splice(event_index, 1);
-				}
-			};
-		})();
-
-		return {
-			set: set,
-			clear: clear
-		};
-	})();
-
-
-	global.setTimeout = function (func, delay, params) {
-		Array.prototype.unshift.call(arguments, false);
-		return timer.set.apply(global, arguments);
+	_.setTimeout = function (func, delay, params) {
+		B[U][C](arguments, O);
+		return w[A](_, arguments);
 	};
 
-	global.setInterval = function (func, delay, params) {
-		Array.prototype.unshift.call(arguments, true);
-		return timer.set.apply(global, arguments);
+	_.setInterval = function (func, delay, params) {
+		B[U][C](arguments, I);
+		return w[A](_, arguments);
 	};
 
-	global.clearTimeout = global.clearInterval = timer.clear;
+	_.clearTimeout = _.clearInterval = q;
 
-	global.setAsync = add;
+	_.setAsync = a;
 
-	global.Events = events;
+	_.events = e;
 
 })();

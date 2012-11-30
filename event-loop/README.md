@@ -54,43 +54,83 @@ This page loads in the Unnecesary.js version (verbose.js), and runs test.js agai
 This page runs test.js against the native JavaScript methods.
 
 
+## error.html
+This page quickly demonstrates how the browser treats timers and errors. From what I can see, 
+errors can be thrown without stopping the event loop.
+
+
 ## test.js
 This file is run in both index.html and comparison.html, and `console.log`s a number of test 
 cases:
 
 ```js
-var interval = { value: 0 };
-var iID = EL.setInterval(function (interval) {
-	console.log("interval", interval.value);
-	interval.value++;
-}, 100, interval);
+setAsync(function () {
+	throw new Error("(1) event loop continues even when an error is thrown");
+});
 ```
+First, we add a new event to the stack. This event will throw an error. In most cases browsers 
+let the event loop even if thean error has been thrown (unless the browser's developer tools 
+step in); this code is to test that the Unnecesary.js version does the same.
 
-This code sets a new interval that will <cite>console.log</cite> the passed-in interval's value 
-before increasing it. It repeats every 100ms. The returned timerID is stored in the iID variable 
-for later use.
+The event loop will simply send the error message to the console and continue execution.
 
 ```js
-EL.setTimeout(function (r) {
-	console.log("timeout", r);
-	EL.clearInterval(iID);
-}, 1000, Math.random());
+setAsync(function () {
+	console.log("(2) async; executed");
+});
 ```
-
-A new timeout is then created, to be executed in 1000ms. When executed, this timer will clear the 
-previously set interval. This means the interval will be run 9 times and then stop.
+This is our second event. It simply `console.log`s a message. This is to ensure it fires 
+_after_ the first event.
 
 ```js
-window.onclick = function (e) {
-	EL.add(function () {
-		console.log("window.onclick", e.pageX, e.pageY);
-		EL.setTimeout(function () { console.log("window.onclick +1000ms", new Date().getTime()); }, 1000);
-		EL.setTimeout(function () { console.log("window.onclick +1010ms", new Date().getTime()); }, 1010);
-	});
-};
+var interval_id = setInterval(function (arg_passed) {
+	console.log("(3) interval; " + (arg_passed ? "arg passed" : "arg not passed"));
+}, 1, true);
 ```
+Next is an interval. It should run at least once (though depending on the browser and the speed 
+of the browser and CPU etc., it may run up to 10 times). The argument should be passed on to the 
+timer function.
 
-These final lines setup an onclick input event. It will `console.log` the fact that 
-it's been triggered, and then create two timeouts 1000 and 1010ms into the future. 
-It then packages all this up into a function and adds it as an event into the loop. 
-This means the loop will be opened, or kept open until those timeouts are called.
+```js
+setTimeout(function () {
+	console.log("(4) timeout; interval cleared");
+	clearInterval(interval_id);
+}, 10);
+```
+And last, we set a timeout. When executed, this will clear the previously set interval.
+
+If all runs correctly, the messages printed to the console should be in order, with "_n_:" 
+prefixing each line.
+
+	NOTE: for the error to be shown in the log, you may have to allow "all" messages to be 
+	displayed in the developer tools' settings.
+
+
+##scripts
+
+### commented.js
+This file is written to be easy to read. Everything flows on from each other, variable names are 
+self-explanatory, and comments explain exactly what is going on and why.
+
+This does mean, however, that the code is very inefficient. This file is meant for reading, not 
+executing. You can think of it as _"pseudo-code"_, that happens to actually run.
+
+### verbose.js
+This file is written as an efficient equivalent to commented.js. It keeps the same logic, but 
+moves things around to run faster and leaner than it's predecessor.
+
+This file is used in the .html example pages.
+
+### terse.js
+This file takes verbose.js and makes the code as short as possible. Variables are 
+single-characters, commonly-used property names and objects are proxied into short-named 
+variables. The code is stripped down as much as possible but so that it runs exactly the same as 
+the verbose.js version.
+
+### minified.js
+This file takes the terse code and strips out any unnecesary whitespace. The result is a 
+hand-minified file that looks and behaves exactly like the commented.js, and therefore the 
+original JavaScript method itself.
+
+This code is efficient and as tiny as you can make it.
+

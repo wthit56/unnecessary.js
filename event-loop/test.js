@@ -1,33 +1,17 @@
-var start_time = new Date();
-function render() {
-	console.log(
-		Events.first_timer_index,
-		Events.length,
-		new Date() - start_time,
-		Events.map(function (v) { return v.ms; })
-	);
-}
 
+setAsync(function () {
+	throw new Error("1: event loop continues even when an error is thrown");
+});
 
-var interval = { value: 0 };
-var iID = setInterval(function (interval) {
-	console.log("interval", interval.value);
-	interval.value++;
-}, 100, interval);
+setAsync(function () {
+	console.log("2: async; executed");
+});
 
-setTimeout(function (r) {
-	console.log("timeout", r);
-	clearInterval(iID);
-}, 1000, Math.random());
+var interval_id = setInterval(function (arg_passed) {
+	console.log("3: interval; " + (arg_passed ? "arg passed" : "arg not passed"));
+}, 1, true);
 
 setTimeout(function () {
-	//throw new Error("Event Loop should continue running, even though this error is thrown.");
-}, 500);
-
-window.onclick = function (e) {
-	setAsync(function () {
-		console.log("window.onclick", e.pageX, e.pageY);
-		setTimeout(function () { console.log("window.onclick +1000ms", new Date().getTime()); }, 1000);
-		setTimeout(function () { console.log("window.onclick +1010ms", new Date().getTime()); }, 1010);
-	});
-};
+	console.log("4: timeout; interval cleared");
+	clearInterval(interval_id);
+}, 10);

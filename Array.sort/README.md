@@ -85,7 +85,7 @@ This file is written to be easy to read. Everything flows on from each other, va
 self-explanatory, and comments explain exactly what is going on and why.
 
 This does mean, however, that the code is very inefficient. This file is meant for reading, not 
-executing.
+executing. You can think of it as _"pseudo-code"_, that happens to actually run.
 
 ### verbose.js
 This file is written as an efficient equivalent to commented.js. It keeps the same logic, but 
@@ -96,10 +96,11 @@ This file is used in the .html example pages.
 ### terse.js
 This file takes verbose.js and makes the code as short as possible. Variables are 
 single-characters, commonly-used property names and objects are proxied into short-named 
-variables.
+variables. The code is stripped down as much as possible but so that it runs exactly the same as 
+the verbose.js version.
 
 ### minified.js
-This file takes the terse code and strips out any unnecesary whitespaces. The result is a 
+This file takes the terse code and strips out any unnecesary whitespace. The result is a 
 hand-minified file that looks and behaves exactly like the commented.js, and therefore the 
 original JavaScript method itself.
 
