@@ -4,18 +4,7 @@
 	<head>
 		<title>Unnecesary.js | Array.sort | Reverse Engineering</title>
 		<meta charset="utf-8" />
-		<style type="text/css">
-			body {background-color:#FFFFFF;}
-			
-			p {
-				margin:0;
-				font-size:20px; font-family:sans-serif;
-				color:#CCCCCC; text-align:center;
-			}
-			p.big {font-size:40px;}
-
-  			a {color:#666666;}
-		</style>
+		<link href="../styles.css" rel="stylesheet" type="text/css" />
 	</head>
 	<body>
 		<p class="big">Please open your browser's Console to see output</p>
@@ -34,18 +23,23 @@
 		</p>
 
 		<script type="text/javascript">
-  			function N(value) {
-  				var id = Math.random();
-  				return {
-  					toString: function () {
-  						console.log(value, id);
-  						return value;
-  					}
-  				};
-  			}
+  	[
+  	    {
+  	    	toString: function () {
+  	    		console.log(".toString() used for sorting");
+  	    		return 0;
+  	    	}
+  	    },
+  	    1
+  	].sort();
 
-  			var a = [N(1), N(2), N(2), N(3), N(2)];
-  			a.sort();
+  	[2, 3, 1].sort(function (a, b) {
+  		console.log("compare: " + a + " " + b);
+  		return a - b;
+  	});
+
+
+
 		</script>
 	</body>
 </html>

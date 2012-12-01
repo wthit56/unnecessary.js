@@ -2,51 +2,26 @@
 
 <html>
 	<head>
-		<title></title>
 		<meta charset="utf-8" />
-		<style type="">
-			html, body {min-height:100%;}
-			body {background-color:#FFFFFF;}
-			
-			p {
-				margin:0;
-				font-size:20px; font-family:sans-serif;
-				color:#CCCCCC; text-align:center;
-			}
-			p.big {font-size:40px;}
-	  
-			a {color:#CCCCCC;}
-		</style>
+		<title>Unnecesary.js | Event Loop | Comparison</title>
+		<link href="../styles.css" rel="stylesheet" type="text/css" />
 	</head>
 	<body>
         <p class="big">Please open your browser's Console to see output</p>
 		<p>press F12, or right-click &gt; inspect element to open the dev tools</p>
 		<p>then select the "Console" tab</p>
         <p>
+			<a href="../">home</a> |
 			<a href="./">unnecesary version</a> |
 			<a href="comparison.html">comparison</a>
 		</p>
 
 		<script type="text/javascript">
-
-            var interval = { value: 0 };
-            var iID = setInterval(function (interval) {
-                console.log("interval", interval.value);
-                interval.value++;
-            }, 100, interval);
-
-            setTimeout(function (r) {
-                console.log("timeout", r);
-                clearInterval(iID);
-            }, 1000, Math.random());
-
-
-            window.onclick = function (e) {
-                console.log("window.onclick", e.pageX, e.pageY);
-                setTimeout(function () { console.log("window.onclick +1000ms", new Date().getTime()); }, 1000);
-                setTimeout(function () { console.log("window.onclick +1010ms", new Date().getTime()); }, 1010);
-            };
-
+  			// set up "setAsync" method for compatibility
+  			window.setAsync = function (fn) {
+  				setTimeout(fn, 0);
+  			};
 		</script>
+		<script src="test.js" type="text/javascript"></script>
 	</body>
 </html>

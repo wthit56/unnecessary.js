@@ -54,11 +54,6 @@ This page loads in the Unnecesary.js version (verbose.js), and runs test.js agai
 This page runs test.js against the native JavaScript methods.
 
 
-## error.html
-This page quickly demonstrates how the browser treats timers and errors. From what I can see, 
-errors can be thrown without stopping the event loop.
-
-
 ## test.js
 This file is run in both index.html and comparison.html, and `console.log`s a number of test 
 cases:
