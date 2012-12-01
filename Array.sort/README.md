@@ -76,32 +76,3 @@ This file reveals the way items are compared in the original JavaScript methods.
 It creates objects with a `.toString` method attached, which will `console.log` it's value, 
 as well as a randomly-generated identifier. It shows how the sorting and comparison is done 
 for each item.
-
-
-## scripts
-
-### commented.js
-This file is written to be easy to read. Everything flows on from each other, variable names are 
-self-explanatory, and comments explain exactly what is going on and why.
-
-This does mean, however, that the code is very inefficient. This file is meant for reading, not 
-executing. You can think of it as _"pseudo-code"_, that happens to actually run.
-
-### verbose.js
-This file is written as an efficient equivalent to commented.js. It keeps the same logic, but 
-moves things around to run faster and leaner than it's predecessor.
-
-This file is used in the .html example pages.
-
-### terse.js
-This file takes verbose.js and makes the code as short as possible. Variables are 
-single-characters, commonly-used property names and objects are proxied into short-named 
-variables. The code is stripped down as much as possible but so that it runs exactly the same as 
-the verbose.js version.
-
-### minified.js
-This file takes the terse code and strips out any unnecesary whitespace. The result is a 
-hand-minified file that looks and behaves exactly like the commented.js, and therefore the 
-original JavaScript method itself.
-
-This code is efficient and as tiny as you can make it.

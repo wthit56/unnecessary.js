@@ -24,23 +24,6 @@ of how node stops when there's nothing going on). The loop will also be started 
 event or timer is added to the stack. For now, I'm `console.log`ging out when the 
 loop is closed and opened, to show you what's going on.
 
-
-## script.js
-So this file exposes the EL object. This includes:
-
-`.events`: the array of events. You can inspect this or print it out how you like so you can 
-see what's going on.
-
-`.add( _fn_ )`: add a function as an immediate event to the loop. It won't actually be executed 
-right away, but it'll be added to the top of the stack to be run quickly. _New events should 
-really be added after any other "immediate" events, but for now it just `unshift`s 
-the new event into the events array._
-
-Some global methods are also over-written:
-`setTimeout(fn, ms, args...)`, `clearTimeout(id)`,
-`setInterval(fn, ms, args...)`, `clearInterval(id)`.
-These work exactly the same way the regular JavaScript methods work.
-
 > NOTE: browsers vary on how timers and immediate events take precedence over each other when 
 > deciding which event should be executed next. However, to keep things simple, I've just gone 
 > for immediate events go at the beginning, followed by any timer events.
@@ -99,33 +82,4 @@ prefixing each line.
 
 	NOTE: for the error to be shown in the log, you may have to allow "all" messages to be 
 	displayed in the developer tools' settings.
-
-
-##scripts
-
-### commented.js
-This file is written to be easy to read. Everything flows on from each other, variable names are 
-self-explanatory, and comments explain exactly what is going on and why.
-
-This does mean, however, that the code is very inefficient. This file is meant for reading, not 
-executing. You can think of it as _"pseudo-code"_, that happens to actually run.
-
-### verbose.js
-This file is written as an efficient equivalent to commented.js. It keeps the same logic, but 
-moves things around to run faster and leaner than it's predecessor.
-
-This file is used in the .html example pages.
-
-### terse.js
-This file takes verbose.js and makes the code as short as possible. Variables are 
-single-characters, commonly-used property names and objects are proxied into short-named 
-variables. The code is stripped down as much as possible but so that it runs exactly the same as 
-the verbose.js version.
-
-### minified.js
-This file takes the terse code and strips out any unnecesary whitespace. The result is a 
-hand-minified file that looks and behaves exactly like the commented.js, and therefore the 
-original JavaScript method itself.
-
-This code is efficient and as tiny as you can make it.
 
