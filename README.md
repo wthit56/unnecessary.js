@@ -10,7 +10,7 @@ code-monkey can look at and know what's going on.
 While writing efficient code is ideal, this project is focussed on readability, 
 and accurately recreating the functionality and quirks of how JavaScript works.
 
-## scripts
+## Scripts
 Each Unnecesary.js recreation has 5 js files included:
 
 ### commented.js
