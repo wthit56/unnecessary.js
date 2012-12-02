@@ -70,3 +70,15 @@ The code overwrites the `setTimeout`, `clearTimeout`, `setInterval`, and `clearI
 methods, as well as creating a new global method called `setAsync`, which can be used to 
 demonstrate how asynchronous callbacks are inserted into the event loop, and how the execution 
 of such callbacks can affected other queued events.
+
+
+## Operators
+Type coercion is one of those things that just _happens_ whether you like it or not, and if you 
+aren't careful, your code could be doing a lot more than you thought it was. The Unnecesary.js 
+code will re-implement different operators, showing how type coercion really works and what you 
+should be aware of if you want to use it smartly.
+
+### Equality
+In here are function implementations for the operators `==` (`equal(a, b)`), `!=` (`notEqual(a, b)`), 
+`===` (`strictEqual(a, b)`), `!==` (`notStrictEqual(a, b)`).
+
