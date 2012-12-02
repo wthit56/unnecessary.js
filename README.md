@@ -24,7 +24,7 @@ executing. You can think of it as _"pseudo-code"_, that happens to actually run.
 This file is written as an efficient equivalent to commented.js. It keeps the same logic, but 
 moves things around to run faster and leaner than it's predecessor.
 
-This file is used in the .html example pages.
+This file is used in the index.html and comparison.html files for testing purposes.
 
 ### terse.js
 This file takes verbose.js and makes the code as short as possible. Variables are 
@@ -40,7 +40,8 @@ original JavaScript method itself.
 This code is efficient and as tiny as you can make it.
 
 ### test.js
-This file is simply used to test the different aspects of the implementation.
+This file is simply used to test the different aspects of the implementation. It is used both in 
+index.html and comparison.html.
 
 
 ## Array.sort

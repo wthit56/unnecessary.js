@@ -4,7 +4,8 @@ that it's pretty awkward to use, but once you figure it out, it can be very powe
 explore this, I made my own sorting function, and found out a couple more oddities that I've 
 done my best to faithfully recreate.
 
-## script.js
+
+## How does is work?
 First, let's talk about the compareFunction. A function can be passed in to Array.sort() to be 
 used as a basis for comparing two values in the array. These are passed in as two parameters, 
 often labelled as "a" and "b". If it returns a negative number, the function is saying that "a" 
@@ -29,17 +30,7 @@ the same compareFunction.
 Then we just return the array, and we're done.
 
 
-## index.html
-This page loads in the Unnecesary.js version (verbose.js), and runs test.js against it.
-
-
-## comparison.html
-This page runs test.js against the native JavaScript methods.
-
-
-## test.js
-This file is run in both index.html and comparison.html, and `console.log`s a number of test 
-cases:
+## Tests
 
 ```js
 [3, 2, 1].sort();

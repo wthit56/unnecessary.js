@@ -29,17 +29,7 @@ loop is closed and opened, to show you what's going on.
 > for immediate events go at the beginning, followed by any timer events.
 
 
-## index.html
-This page loads in the Unnecesary.js version (verbose.js), and runs test.js against it.
-
-
-## comparison.html
-This page runs test.js against the native JavaScript methods.
-
-
-## test.js
-This file is run in both index.html and comparison.html, and `console.log`s a number of test 
-cases:
+## Tests
 
 ```js
 setAsync(function () {
@@ -80,6 +70,6 @@ And last, we set a timeout. When executed, this will clear the previously set in
 If all runs correctly, the messages printed to the console should be in order, with "_n_:" 
 prefixing each line.
 
-	NOTE: for the error to be shown in the log, you may have to allow "all" messages to be 
-	displayed in the developer tools' settings.
+> NOTE: for the error to be shown in the log, you may have to allow "all" messages to be 
+> displayed in the developer tools' settings.
 

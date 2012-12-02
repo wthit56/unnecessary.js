@@ -1,3 +1,15 @@
+// when testing the original JavaScript functionality,
+//    we'll create some proxy functions to use
+if (!equal || !strictEqual) {
+	function equal(a, b) {
+		return a == b;
+	}
+
+	function strictEqual(a, b) {
+		return a === b;
+	}
+}
+
 
 function test(a, method, b) {
 	console.log(
@@ -9,32 +21,35 @@ function test(a, method, b) {
 // equal tests
 equal.operator = "==";
 
-test(1, equal, 1);
-test(1, equal, 2);
-test(true, equal, true);
-test(true, equal, false);
-test("string", equal, "string");
-test("string", equal, "other string");
+test(1, equal, 1); // true
+test(1, equal, 2); // false
+test(true, equal, true); // true
+test(true, equal, false); // false
+test("string", equal, "string"); // true
+test("string", equal, "other string"); // false
 
-test(1, equal, true);
-test(1, equal, false);
-test(1, equal, "1");
-test(1, equal, "2");
-test("[object Object]", equal, {});
+test(1, equal, true); // true
+test(1, equal, false); // false
+test(1, equal, "1"); // true
+test(1, equal, "2"); // false
+test("[object Object]", equal, {}); // true (in some browsers)
+
+// see test.js source for more information on this test
 test("object string", equal, {
 	value: "object string",
-	// note: "see test.js source for more information on this test",
 	toString: function () { return this.value; }
-});
+}); // true
 
 var a = { value: true },
 	b = { value: false };
 
-test(a, equal, a);
-test(a, equal, b);
+test(a, equal, a); // true
+test(a, equal, b); // false
+
 
 // strict equal tests
 strictEqual.operator = "===";
-test(1, strictEqual, 1);
-test(1, strictEqual, "1");
-test(1, strictEqual, 2);
+
+test(1, strictEqual, 1); // true
+test(1, strictEqual, "1"); // false
+test(1, strictEqual, 2); //false
