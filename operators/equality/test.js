@@ -53,3 +53,4 @@ strictEqual.operator = "===";
 test(1, strictEqual, 1); // true
 test(1, strictEqual, "1"); // false
 test(1, strictEqual, 2); //false
+
