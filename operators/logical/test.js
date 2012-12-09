@@ -1,53 +1,43 @@
 // when testing the original JavaScript functionality,
 //    we'll create some proxy functions to use
-if (!window.and || !window.or) {
-	window.and = function (conditions) {
-		var result = true;
-		var i = 0, l = arguments.length;
-		while (i < l) {
-			result = result && arguments[i];
-			i++;
-		}
-		return result;
-	}
+if (!Object.prototype.and || !Object.prototype.or || !not) {
 
-	window.or = function (conditions) {
-		var result = false;
-		var i = 0, l = arguments.length;
-		while (i < l) {
-			result = result || arguments[i];
-			i++;
-		}
-		return result;
-	}
+	Object.prototype.and = function (operand) {
+		return (this.valueOf() && operand);
+	};
+
+	Object.prototype.or = function (operand) {
+		return (this.valueOf() || operand);
+	};
+
+	window.not = function (operand) {
+		return (!operand);
+	};
+
 }
 
 
-function test(operator, a, b) {
-	console.log(
-	"(" + JSON.stringify(a) + " " + operator.symbol + " " + JSON.stringify(b) + ")" +
-	" === " + JSON.stringify(operator.apply(this, Array.prototype.slice.call(arguments, 1)))
-);
-}
-
-and.symbol = "&&";
-test(and, true, true);
-test(and, true, false);
-test(and, false, false);
-test(and, "truthy", "");
-test(and, "", "truthy");
-test(and, "t", 1);
-test(and, 1, "t");
+console.log("true && true // " + (true).and(true));
+console.log("true && false // " + (true).and(false));
+console.log("false && false // " + (false).and(false));
+console.log("\"truthy\" && \"\" // " + JSON.stringify(("truthy").and("")));
+console.log("\"\" && \"truthy\" // " + JSON.stringify(("").and("truthy")));
+console.log("\"t\" && 1 // " + JSON.stringify(("t").and(1)));
+console.log("1 && \"t\" // " + JSON.stringify((1).and("t")));
 console.log("");
 
-or.symbol = "||";
-test(or, true, true);
-test(or, true, false);
-test(or, false, false);
-test(or, "", "truthy");
-test(or, "truthy", "");
-test(or, "", 0);
-test(or, 0, "");
+console.log("true || true // " + (true).or(true));
+console.log("true || false // " + (true).or(false));
+console.log("false || false // " + (false).or(false));
+console.log("\"truthy\" || \"\" // " + JSON.stringify(("truthy").or("")));
+console.log("\"\" || \"truthy\" // " + JSON.stringify(("").or("truthy")));
+console.log("\"\" || 0 // " + JSON.stringify(("").and(0)));
+console.log("0 || \"\" // " + JSON.stringify((0).and("")));
 console.log("");
 
-console.log("((true && false) || true) === " + or(and(true, false), true));
+console.log("((true && false) || true) // " + ((true).and(false)).or(true));
+console.log("");
+
+console.log("!true // " + not(true));
+console.log("!\"truthy\" // " + not("truthy"));
+console.log("!!1 // " + not(not(1)));

@@ -1,43 +1,50 @@
-function and(conditions){
-	var i = 0, l = arguments.length;
-	while (i < l) {
-		// argument is a truthy value...
-		if (arguments[i]) {
-			// ...so do nothing
-		}
 
-		// argument is a falsy value...
-		if (!arguments[i]) {
-			// ...so return argument
-			return arguments[i];
-		}
-
-		i++;
+// called using:
+//    (value).and(value)
+Object.prototype.and = function (operand) {
+	// this is falsy...
+	if (!this.valueOf()) {
+		// ...so return this
+		return this;
 	}
-
-	// no falsy value have been found,
-	//    so return last argument
-	return arguments[l - 1];
-}
-
-function or(conditions) {
-	var i = 0, l = arguments.length;
-	while (i < l) {
-		// argument is a truthy value...
-		if (arguments[i]) {
-			// ...so return argument
-			return arguments[i];
-		}
-
-		// argument is falsy
-		if (!arguments[i]) {
-			// ...so do nothing
-		}
-
-		i++;
+	// this is not falsy...
+	// (this is truthy)
+	else {
+		// ...so return operand
+		return operand;
 	}
+};
 
-	// no truthy value has been found,
-	//    so return last argument
-	return arguments[l - 1];
-}
+// called using:
+//    (value).or(value)
+Object.prototype.or = function (operand) {
+	// this is truthy...
+	if (this.valueOf()) {
+		// ...so return this
+		return this;
+	}
+	// this is not truthy...
+	// (this is falsy)
+	else {
+		// ...so return operand
+		return operand;
+	}
+};
+
+// called using:
+//    not(value)
+window.not = function (operand) {
+	// operand is truthy...
+	if (operand) {
+		// ...so return false
+		// (inverted truthiness)
+		return false;
+	}
+	// operand is not truthy...
+	// (operand is falsy)
+	else {
+		// ...so return true
+		// (inverted truthiness)
+		return true;
+	}
+};

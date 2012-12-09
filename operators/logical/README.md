@@ -2,11 +2,15 @@
 
 This code simulates how logical operators work internally. Implemented are the following:
 
-`&&` (`and`): loop through each operand and return the first falsy value, or returns the last 
+`&&` (`(value).and(value)`): loop through each operand and return the first falsy value, or returns the last 
 operand (which will be truthy).
 
-`||` (`or`): loop through eahc operand and return the first truthy value, or returns the last 
+`||` (`(value).or(value)`): loop through eahc operand and return the first truthy value, or returns the last 
 operand (which will be falsy).
+
+`!` (`not(value)`): return the inverted truthiness of the given value. This operator always 
+returns a boolean value, and so can be used to convert a value into a boolean, using a 
+double-not (`!!"truthy" // true`).
 
 The rules I've used in writing these functions are based on those outlined here: 
 [Mozilla Developer Network: Expressions and Operators](https://developer.mozilla.org/en-US/docs/JavaScript/Guide/Expressions_and_Operators)
@@ -20,29 +24,36 @@ versions. Otherwise, we create proxy functions with the same names, so that the 
 okay.
 
 ```js
-test(and, true, true); // true
-test(and, true, false); // false
-test(and, false, false); // false
-test(and, "truthy", ""); // ""
-test(and, "", "truthy"); // ""
-test(and, "t", 1); // 1
-test(and, 1, "t"); // "t"
+console.log("true && true // " + (true).and(true));
+console.log("true && false // " + (true).and(false));
+console.log("false && false // " + (false).and(false));
+console.log("\"truthy\" && \"\" // " + JSON.stringify(("truthy").and("")));
+console.log("\"\" && \"truthy\" // " + JSON.stringify(("").and("truthy")));
+console.log("\"t\" && 1 // " + JSON.stringify(("t").and(1)));
+console.log("1 && \"t\" // " + JSON.stringify((1).and("t")));
 ```
 The lines above test the `and` operator.
 
 ```js
-test(or, true, true);
-test(or, true, false);
-test(or, false, false);
-test(or, "", "truthy");
-test(or, "truthy", "");
-test(or, "", 0);
-test(or, 0, "");
+console.log("true || true // " + (true).or(true));
+console.log("true || false // " + (true).or(false));
+console.log("false || false // " + (false).or(false));
+console.log("\"truthy\" || \"\" // " + JSON.stringify(("truthy").or("")));
+console.log("\"\" || \"truthy\" // " + JSON.stringify(("").or("truthy")));
+console.log("\"\" || 0 // " + JSON.stringify(("").and(0)));
+console.log("0 || \"\" // " + JSON.stringify((0).and("")));
 ```
 These lines test the `or` operator.
 
 ```js
-console.log("((true && false) || true) === " + or(and(true, false), true));
+console.log("((true && false) || true) // " + ((true).and(false)).or(true));
 ```
-This final line does a composition of `and` and `or` operators. Just as the regular operators 
+This line does a composition of `and` and `or` operators. Just as the regular operators 
 can be grouped and nested within each other, the Unnecesary.js versions can, too.
+
+```js
+console.log("!true // " + not(true));
+console.log("!\"truthy\" // " + not("truthy"));
+console.log("!!1 // " + not(not(1)));
+```
+These final lines test the `not` function.

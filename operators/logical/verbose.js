@@ -1,22 +1,12 @@
 
-(function () {
-	var i, l;
+Object.prototype.and = function (operand) {
+	return this.valueOf() ? operand : this.valueOf();
+};
 
-	window.and = function (conditions) {
-		i = 0, l = arguments.length - 1;
-		while ((i < l) && (arguments[i])) {
-			i++;
-		}
+Object.prototype.or = function (operand) {
+	return this.valueOf() ? this.valueOf() : operand;
+};
 
-		return arguments[i];
-	}
-
-	window.or = function (conditions) {
-		i = 0, l = arguments.length - 1;
-		while ((i < l) && (!arguments[i])) {
-			i++;
-		}
-
-		return arguments[i];
-	}
-})();
+window.not = function (operand) {
+	return operand ? false : true;
+};
