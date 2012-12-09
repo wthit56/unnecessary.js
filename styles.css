@@ -10,6 +10,6 @@ p {
 }
 p.big {font-size:40px;}
 	  
-a {color:#666666;}
+a, span {color:#666666;}
 
 h1 {margin:0; font-size:60px; color: #666666;}

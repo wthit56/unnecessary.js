@@ -79,9 +79,9 @@ code will re-implement different operators, showing how type coercion really wor
 should be aware of if you want to use it smartly.
 
 ### Equality
-In here are function implementations for the operators `==` (`equal(a, b)`), `!=` (`notEqual(a, b)`), 
-`===` (`strictEqual(a, b)`), `!==` (`notStrictEqual(a, b)`).
+In here are function implementations for the operators `==` (`equal(a, b)`),
+`!=` (`notEqual(a, b)`), `===` (`strictEqual(a, b)`), `!==` (`notStrictEqual(a, b)`).
 
 ### Logical
-The logical operators (`&&`, `||`) can be used for more than if statements and while loops. If 
+The logical operators (`&&`, `||`, `!`) can be used for more than if statements and while loops. If 
 you know what you're doing, you can use the or operator to default values, for example.

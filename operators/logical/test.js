@@ -16,16 +16,18 @@ if (!Object.prototype.and || !Object.prototype.or || !not) {
 
 }
 
-
+console.log("&&\n");
 console.log("true && true // " + (true).and(true));
 console.log("true && false // " + (true).and(false));
 console.log("false && false // " + (false).and(false));
+console.log("");
+
 console.log("\"truthy\" && \"\" // " + JSON.stringify(("truthy").and("")));
 console.log("\"\" && \"truthy\" // " + JSON.stringify(("").and("truthy")));
 console.log("\"t\" && 1 // " + JSON.stringify(("t").and(1)));
 console.log("1 && \"t\" // " + JSON.stringify((1).and("t")));
-console.log("");
 
+console.log("\n\n||\n");
 console.log("true || true // " + (true).or(true));
 console.log("true || false // " + (true).or(false));
 console.log("false || false // " + (false).or(false));
@@ -33,10 +35,10 @@ console.log("\"truthy\" || \"\" // " + JSON.stringify(("truthy").or("")));
 console.log("\"\" || \"truthy\" // " + JSON.stringify(("").or("truthy")));
 console.log("\"\" || 0 // " + JSON.stringify(("").and(0)));
 console.log("0 || \"\" // " + JSON.stringify((0).and("")));
-console.log("");
 
+console.log("\n\n&&, ||\n");
 console.log("((true && false) || true) // " + ((true).and(false)).or(true));
-console.log("");
+console.log("\n");
 
 console.log("!true // " + not(true));
 console.log("!\"truthy\" // " + not("truthy"));
