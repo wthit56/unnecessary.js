@@ -10,17 +10,25 @@ if (!equal || !strictEqual) {
 	}
 }
 
+var test = (function () {
+	function toString(value) {
+		if (typeof (value) === "number") { return value.toString(); }
+		else { return JSON.stringify(value); }
+	}
+	return function test(a, method, b) {
+		console.log(
+			"(" + toString(a) + " " + method.operator + " " + toString(b) + ")" +
+			" // returns " + method(a, b)
+		);
+	};
+})();
 
-function test(a, method, b) {
-	console.log(
-		"(" + JSON.stringify(a) + " " + method.operator + " " + JSON.stringify(b) + ")" +
-		" // returns " + method(a, b)
-	);
-}
 
 // equal tests
 equal.operator = "==";
 console.log(equal.operator + "\n");
+
+test(+"NaN", equal, +"NaN");
 
 test(1, equal, 1); // true
 test(1, equal, 2); // false
@@ -44,8 +52,8 @@ test("object string", equal, {
 }); // true
 console.log("");
 
-var a = { value: true },
-	b = { value: false };
+var a = { value: 1 },
+	b = { value: 2 };
 
 test(a, equal, a); // true
 test(a, equal, b); // false
