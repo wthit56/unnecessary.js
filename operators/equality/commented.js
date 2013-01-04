@@ -1,4 +1,3 @@
-
 function equal(a, b) {
 	// operands are not of the same type...
 	if (typeof (a) !== typeof (b)) {
