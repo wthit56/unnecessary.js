@@ -85,3 +85,12 @@ In here are function implementations for the operators `==` (`equal(a, b)`),
 ### Logical
 The logical operators (`&&`, `||`, `!`) can be used for more than if statements and while loops. If 
 you know what you're doing, you can use the or operator to default values, for example.
+
+
+## Node
+
+### .cloneNode(deep)
+The cloneNode method, available on every DOM Node, makes a full copy of the entire node. If you 
+specify the optional _deep_ parameter as truthy, then it will also clone all child nodes 
+recursively. It will _not_, however, clone any javascript-based properties or events. Think of 
+it as more of cloning the HTML, as opposed to the object-representation you see in JavaScript.

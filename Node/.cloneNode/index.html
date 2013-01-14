@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Node.cloneNode</title>
+		<style type="text/css">
+  			div {display:none;}
+		</style>
+    </head>
+    <body>
+        <script src="console-shim.js" type="text/javascript"></script>
+        <script src="commented.js" type="text/javascript"></script>
+		<div flag attribute="value">
+			<span attribute="value" flag></span>
+		</div>
+		<script type="text/javascript">
+  	var base = document.getElementsByTagName("div")[0];
+  	base.property = "value";
+
+  	console.group("original");
+  	console.log(base);
+	console.log(".property: ", base.property);
+  	console.groupEnd();
+
+  	var clone = base.cloneNode(true);
+  	console.group("clone");
+  	console.log(clone);
+  	console.log(".property: ", clone.property);
+	console.groupEnd();
+		</script>
+    </body>
+</html>
