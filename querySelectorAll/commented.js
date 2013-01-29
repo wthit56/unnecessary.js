@@ -15,103 +15,159 @@ document.querySelectorAll = (function () {
 			console.error("Cannot find document.getElementsByTagNameNS");
 			failed = true;
 		}
+		if (!window.Replacer) {
+			console.error("Cannot find Replacer");
+			failed = true;
+		}
 
 		if (failed) { return; }
 	}
 
-	var attr = (function () {
-		var attr = {
-			name: /([a-zA-Z0-9-]+)/,
-			value: /([~\|\^\$\*])?\=(?:(["'])([\W\w]*?)\3|(\S*))/
-		};
-		attr.find = new RegExp("\\[" + attr.name.source + "(?:" + attr.value.source + ")?\\]");
+	var parse = Replacer.aggregate(
+		{ // attribute
+			find: /\[([a-zA-Z0-9-]+)(?:([~\|\^\$\*]|)\=(?:(["'])([\W\w]*?)\3|([^\s\]]*)))?\]/g,
+			replace: (function () {
+				function replace(match, name, valueMatch, quote, value, unquotedValue) {
+					if (!current.attributes) { current.attributes = []; }
 
-		attr.matchMap = {
-			"": "exact",
-			"~": "whitespace-separated",
-			"|": "hyphen-separated",
-			"^": "starts-with",
-			"$": "ends-with",
-			"*": "includes"
-		};
-		attr.replace = function (match, name, valueMatch, quote, value, unquotedValue) {
-			this.attributes.push({
-				type: attribute,
-				name: name,
-				value: (value != null) ? value : unquotedValue,
-				match: attr.matchMap[(valueMatch == null) ? "" : valueMatch]
-			});
-		};
+					var config = { name: name };
 
-		return attr;
-	})();
+					value = (value != null) ? value : unquotedValue;
+					if (value != null) { config.value = value; }
 
-	var find = new RegExp(
-		attr.find.source
-	, "g");
-	console.log("find: ", find);
+					valueMatch = replace.matchMap[valueMatch];
+					if (valueMatch != null) { config.match = valueMatch; }
 
-	return function (selectors) {
-		console.group(selectors);
+					console.log("attribute: ", config);
+					current.attributes.push(config);
+				};
+				replace.matchMap = {
+					"": "exact",
+					"~": "whitespace-separated",
+					"|": "hyphen-separated",
+					"^": "starts-with",
+					"$": "ends-with",
+					"*": "includes"
+				};
 
-		selectors.replace(/([\W\w]*?(?:(["'])[\W\w]*?\2))*?(?:,|$)/g, function (match) {
-			console.group(match);
-			console.groupEnd();
-		});
-		
-		console.groupEnd();
-	};
+				return replace;
+			})()
+		},
+		{ // any
+			find: /(?:(\S*)\|)?\*/,
+			replace: function (match, namespace) {
+				current.any = true;
+				console.log("<*> (any element)");
 
-
-	return function (selectors) {
-		console.group(selectors);
-		{
-			selectors = selectors.split(/\s*,\s*/g);
-			var i = 0, c, l = selectors.length;
-			while (i < l) {
-				console.group(selectors[i]);
-				{
-					c = selectors[i] = new String(selectors[i]);
-
-					console.log("select elements...");
-					c.replace(
-						/(\[([a-zA-Z0-9-]+)(([\~\|\^\$\*])=(?:(["'])([\W\w]*?)\9)|\S*)?\])|((?:(?:\*|([a-zA-Z0-9-]*))\|)?\*)|(?:\:\:?([a-z-]+))|(?:\s*(?:(\+)|(~)|(>))\s*)|(\s+)|(?:(?:(\.)|(#))?([a-zA-Z0-9-]+(?!\|)))/g,
-						function handle(match, attr, attrName, attrValue, attrIncludesWhitespace, attrIncludesHyphens, attrStartsWith, attrEndsWith, attrIncludes, any, anyNamespace, pseudo, adjacent, sibling, child, descendant, isClass, isID, name) {
-							console.log(arguments);
-
-							if (any) {
-								console.log(
-									"any element" +
-									(
-										(anyNamespace == null) ? ""
-											: " (" + (
-												anyNamespace.length > 0 ? "namespace: " + anyNamespace
-													: "no namespace"
-											) + ")"
-									)
-								);
-							}
-							else if (pseudo) { console.log("move to pseudo (" + pseudo + ")"); }
-							else if (adjacent) { console.log("move to adjacent..."); }
-							else if (sibling) { console.log("move to sibling..."); }
-							else if (child) { console.log("move to child..."); }
-							else if (descendant) { console.log("move to descendant..."); }
-							else if (name) {
-								if (isClass) { console.log("with class: ", name); }
-								else if (isID) { console.log("with id: ", name); }
-								else { console.log("with tagName: ", name); }
-							}
-							else if (attr) {
-
-							}
-						}
-					);
+				if (namespace != null) {
+					current.namespace = namespace;
+					if (namespace === "") { console.log("of no namespace"); }
+					else { console.log("of namespace: \"" + namespace + "\""); }
 				}
-				console.groupEnd();
+			}
+		},
+		{ // class, id, element, pseudo
+			find: /([\.#])?([a-zA-Z0-9-]+)/,
+			replace: (function () {
+				function replace(match, type, name) {
+					if (type == null) {
+						current.tagName = name;
+						console.log("<" + name + ">");
+					}
+					else {
+						type = replace.typeMap[type];
 
-				i++;
+						if (type === "class") {
+							if (current.classes == null) {
+								if (current.class != null) {
+									current.classes = [current.class, name];
+									delete current.class;
+								}
+								else { current.class = name; }
+							}
+							else { current.classes.push(name); }
+						}
+						else if (type === "id") {
+							current.id = name;
+						}
+
+						console.log("has " + type + ": " + name);
+					}
+				};
+				replace.typeMap = {
+					".": "class",
+					"#": "id"
+				};
+
+				return replace;
+			})()
+		},
+		{ // combinators
+			find: /\s*([\+~>]|\s)\s*/,
+			replace: (function () {
+				function replace(match, type) {
+					type = replace.typeMap[type];
+					current.moveTo = { relation: type };
+					current = current.moveTo;
+
+					console.log("move to " + type + "...");
+				};
+				replace.typeMap = {
+					" ": "descendant",
+					"+": "adjacent",
+					"~": "sibling",
+					">": "child"
+				};
+
+				return replace;
+			})()
+		},
+		{ // pseudo
+			find: /::?([a-zA-Z0-9-]+)(?:\(([^(]*)\))?/,
+			replace: function (match, type, parameter) {
+				var config = { type: type };
+				if (parameter != null) { config.parameter = parameter; }
+
+				if (current.pseudos == null) {
+					if (current.pseudo == null) { current.pseudo = config; }
+					else {
+						current.pseudos = [current.pseudo, config];
+						delete current.pseudo;
+					}
+				}
+				else {
+					current.pseudos.push(config);
+				}
+
+				console.log("pseudo: ", config);
 			}
 		}
+	);
+
+	var findSelectors = /((?:[\W\w]*?(?:(["'])[\W\w]*?\2)?)*?)(?:,\s*|$)/g;
+
+	var current, parsed;
+
+	return function (selectors) {
+		console.group(selectors);
+
+		parsed = [];
+
+		selectors.replace(findSelectors, function (match, selector) {
+			if (match.length === 0) { return; }
+
+			console.group(selector);
+
+			current = {};
+			parsed.push(current);
+
+			parse(selector);
+
+			console.groupEnd();
+		});
+
 		console.groupEnd();
-	}
+
+		return parsed;
+	};
 })();
