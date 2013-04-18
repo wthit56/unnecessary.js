@@ -94,3 +94,26 @@ The cloneNode method, available on every DOM Node, makes a full copy of the enti
 specify the optional _deep_ parameter as truthy, then it will also clone all child nodes 
 recursively. It will _not_, however, clone any javascript-based properties or events. Think of 
 it as more of cloning the HTML, as opposed to the object-representation you see in JavaScript.
+
+## Event Bubbling
+
+When an DOM event is triggered, registered listeners are called, being passed the relevant data for that event. There a few stages to this process, and this can affect the order and execution of each of the listeners.
+
+_(Source: http://www.w3.org/TR/2003/NOTE-DOM-Level-3-Events-20031107/events.html#Events-phases)_
+
+1. *Capture*
+Any listeners registered using the optional `useCapture` flag are called, starting with the highest DOM node in the tree, and working towards the target element.
+
+2. *Target*
+Listeners registered on the target element are then called, starting with the "capturing" listeners, and then the regular, "non-capturing" ones.
+
+3. *Bubbling*
+Next, the event "bubbles up" the DOM tree, calling any remaining, non-capturing listeners.
+
+4. *Default*
+Some elements have default actions that are triggered by certain events. For example, a checkbox element will show or hide the "tick" when the mouse "click" event is triggered.
+
+The execution of these can be interrupted by any one of the listeners. The passed-in Event object has a couple of methods for the listener to use:
+
+- `.stopPropagation()` will stop the execution of any further listeners. (NOTE: this used to be called "cancelBubble" - which only stopped listeners that would be called suring the Bubbling phase - but has been changed in favour of this more general method.)
+- `.preventDefault()` will stop any default listeners from being called.
