@@ -1,9 +1,17 @@
-﻿var test = (function () {
-	var match;
+﻿var test = new Regex(/[a-zA-Z_][a-zA-Z0-9_]+/);
+test.build();
+console.dir(test.parts);
 
-	return function test(regex, input) {
-		match = input.match(regex);
-
-		console.log(JSON.stringify(regex.source), ">", JSON.stringify(input), "==", null);
-	};
-})();
+//debugger;
+var input = "* _a0nvidf nveiu8973947";
+console.group(JSON.stringify(input));
+{
+	var i = 1, match;
+	while (true) {
+		match = test.run(input);
+		console.log("match " + i + " => " + JSON.stringify(match));
+		if (match == null) { break; }
+		i++;
+	}
+}
+console.groupEnd();

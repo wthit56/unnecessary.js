@@ -18,6 +18,8 @@
 			this.multiline = (source.indexOf("m") !== -1);
 		}
 
+		this.source = source;
+
 		index = -1;
 
 		this.parents = [];
@@ -319,16 +321,3 @@
 
 	return Regex;
 })();
-
-
-var testGen;
-//testGen = new Regex(/^_{}!{,}a*b+c{2}?[^a-zA-Z0-9a-f\x0000]{3,}(e\b(z?)){,4}(?:f){5,6}(?=g)(?!h)?|.[\b]\cM\n\1\0\0123\x0f\u0AaF$/);
-//testGen = new Regex(/0*?1+?2{2}?3{3,}?4{4,4}?5{5,6}?/);
-//testGen = new Regex(/0*1+2{2}3{3,}4{4,4}5{5,6}/);
-
-//new Regex(/[abc][^abc][a-c][^a-c][a^c][abc-][-abc][^abc-][^-abc][\cM\n\1\0\0123\x2B\u01D0\b\n]/);
-//new Regex(/[abc][^abc][a-c][^a-c][a^c][\x10-\uFFFF]/);
-
-//testGen = new Regex(/a.c|d.f(?:g.i|(j.l))/);
-testGen = new Regex(/[abc0-9\x23\u0024z-z]/);
-console.dir(testGen.parts);
